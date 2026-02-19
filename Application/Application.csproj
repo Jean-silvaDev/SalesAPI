@@ -11,9 +11,6 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Mappings\" />
     <Folder Include="Services\" />
-    <Folder Include="UseCases\Customers\GetCustomerById\" />
-    <Folder Include="UseCases\Customers\DeleteCustomer\" />
-    <Folder Include="UseCases\Customers\UpdateCustomer\" />
   </ItemGroup>
 
   <ItemGroup>

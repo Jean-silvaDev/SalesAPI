@@ -6,11 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 [Route("api/[controller]")]
 public class CustomersController : ControllerBase
 {
-    private readonly CreateCustomerUseCase _createUseCase;
+    private readonly DeleteCustomerUseCase _createUseCase;
     private readonly GetAllCustomersUseCase _getAllUseCase;
 
     public CustomersController(
-        CreateCustomerUseCase createUseCase,
+        DeleteCustomerUseCase createUseCase,
         GetAllCustomersUseCase getAllUseCase)
     {
         _createUseCase = createUseCase;
@@ -18,7 +18,7 @@ public class CustomersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CreateCustomerCommand command, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> Create(DeleteCustomerCommand command, CancellationToken cancellationToken = default)
     {
         var id = await _createUseCase.ExecuteAsync(command, cancellationToken);
         return CreatedAtAction(nameof(GetAll), new { id }, null);
