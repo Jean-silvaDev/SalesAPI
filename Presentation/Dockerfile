@@ -1,31 +1,26 @@
-# Imagem de build
+# ---------- Build ----------
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-# Copia a solução
-COPY ../*.sln ./
+# Copia solution
+COPY *.sln .
 
-# Copia os projetos
-COPY ../Application/Application.csproj Application/
-COPY ../Domain/Domain.csproj Domain/
-COPY ../Infrastructure/Infrastructure.csproj Infrastructure/
-COPY ./*.csproj Presentation/
+# Copia projetos
+COPY Domain/ Domain/
+COPY Application/ Application/
+COPY Infrastructure/ Infrastructure/
+COPY Presentation/ Presentation/
 
-# Restaura dependências
-RUN dotnet restore
+# Restore
+RUN dotnet restore Presentation/Presentation.csproj
 
-# Copia todo o código
-COPY . .
-WORKDIR /src/Presentation
-RUN dotnet publish -c Release -o /app/publish
+# Publish
+RUN dotnet publish Presentation/Presentation.csproj -c Release -o /app/publish
 
-# Publica
-WORKDIR /src/Presentation
-RUN dotnet publish -c Release -o /app/publish
-
-# Imagem de runtime
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
+# ---------- Runtime ----------
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
+
 COPY --from=build /app/publish .
 
 EXPOSE 8080

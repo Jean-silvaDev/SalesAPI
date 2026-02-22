@@ -11,10 +11,12 @@ public class DeleteCustomerUseCase
         _repository = repository;
     }
 
-    public async Task ExecuteAsync(DeleteCustomerCommand command, CancellationToken cancellationToken)
+    public async Task ExecuteAsync(Guid id, CancellationToken cancellationToken)
     {
-
-        await _repository.DeleteAsync(command.Id, cancellationToken);
+        var customer = await _repository.GetByIdAsync(id, cancellationToken);
+        if (customer is null)
+            throw new ArgumentNullException("Customer not found!");
+        await _repository.DeleteAsync(id, cancellationToken);
         await _repository.CommitAsync(cancellationToken);
     }
 }
